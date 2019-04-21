@@ -19,10 +19,10 @@ ZB1.Init()
 ZB2.Init()
 # User code here, use ZB1 and ZB2 to control each board separately
 
-For explanations of the functions available call the Help function, e.g.
+For explanations of the functions available call the help function, e.g.
 import ZeroBorg
 ZB = ZeroBorg.ZeroBorg()
-ZB.Help()
+ZB.help()
 See the website at www.piborg.org/zeroborg for more details
 """
 
@@ -32,70 +32,72 @@ import types
 import time
 
 # Constant values
-PWM_MAX                 = 255
-I2C_NORM_LEN            = 4
-I2C_LONG_LEN            = 24
+PWM_MAX = 255
+I2C_NORM_LEN = 4
+I2C_LONG_LEN = 24
 
-I2C_ID_ZEROBORG         = 0x40
+I2C_ID_ZEROBORG = 0x40
 
-COMMAND_SET_LED         = 1     # Set the LED status
-COMMAND_GET_LED         = 2     # Get the LED status
-COMMAND_SET_A_FWD       = 3     # Set motor 1 PWM rate in a forwards direction
-COMMAND_SET_A_REV       = 4     # Set motor 1 PWM rate in a reverse direction
-COMMAND_GET_A           = 5     # Get motor 1 direction and PWM rate
-COMMAND_SET_B_FWD       = 6     # Set motor 2 PWM rate in a forwards direction
-COMMAND_SET_B_REV       = 7     # Set motor 2 PWM rate in a reverse direction
-COMMAND_GET_B           = 8     # Get motor 2 direction and PWM rate
-COMMAND_SET_C_FWD       = 9     # Set motor 3 PWM rate in a forwards direction
-COMMAND_SET_C_REV       = 10    # Set motor 3 PWM rate in a reverse direction
-COMMAND_GET_C           = 11    # Get motor 3 direction and PWM rate
-COMMAND_SET_D_FWD       = 12    # Set motor 4 PWM rate in a forwards direction
-COMMAND_SET_D_REV       = 13    # Set motor 4 PWM rate in a reverse direction
-COMMAND_GET_D           = 14    # Get motor 4 direction and PWM rate
-COMMAND_ALL_OFF         = 15    # Switch everything off
-COMMAND_SET_ALL_FWD     = 16    # Set all motors PWM rate in a forwards direction
-COMMAND_SET_ALL_REV     = 17    # Set all motors PWM rate in a reverse direction
-COMMAND_SET_FAILSAFE    = 18    # Set the failsafe flag, turns the motors off if communication is interrupted
-COMMAND_GET_FAILSAFE    = 19    # Get the failsafe flag
-COMMAND_RESET_EPO       = 20    # Resets the EPO flag, use after EPO has been tripped and switch is now clear
-COMMAND_GET_EPO         = 21    # Get the EPO latched flag
-COMMAND_SET_EPO_IGNORE  = 22    # Set the EPO ignored flag, allows the system to run without an EPO
-COMMAND_GET_EPO_IGNORE  = 23    # Get the EPO ignored flag
-COMMAND_GET_NEW_IR      = 24    # Get the new IR message received flag
-COMMAND_GET_LAST_IR     = 25    # Get the last IR message received (long message, resets new IR flag)
-COMMAND_SET_LED_IR      = 26    # Set the LED for indicating IR messages
-COMMAND_GET_LED_IR      = 27    # Get if the LED is being used to indicate IR messages
-COMMAND_GET_ANALOG_1    = 28    # Get the analog reading from port #1, pin 2
-COMMAND_GET_ANALOG_2    = 29    # Get the analog reading from port #2, pin 4
-COMMAND_GET_ID          = 0x99  # Get the board identifier
-COMMAND_SET_I2C_ADD     = 0xAA  # Set a new I2C address
+COMMAND_SET_LED = 1  # Set the LED status
+COMMAND_GET_LED = 2  # Get the LED status
+COMMAND_SET_A_FWD = 3  # Set motor 1 PWM rate in a forwards direction
+COMMAND_SET_A_REV = 4  # Set motor 1 PWM rate in a reverse direction
+COMMAND_GET_A = 5  # Get motor 1 direction and PWM rate
+COMMAND_SET_B_FWD = 6  # Set motor 2 PWM rate in a forwards direction
+COMMAND_SET_B_REV = 7  # Set motor 2 PWM rate in a reverse direction
+COMMAND_GET_B = 8  # Get motor 2 direction and PWM rate
+COMMAND_SET_C_FWD = 9  # Set motor 3 PWM rate in a forwards direction
+COMMAND_SET_C_REV = 10  # Set motor 3 PWM rate in a reverse direction
+COMMAND_GET_C = 11  # Get motor 3 direction and PWM rate
+COMMAND_SET_D_FWD = 12  # Set motor 4 PWM rate in a forwards direction
+COMMAND_SET_D_REV = 13  # Set motor 4 PWM rate in a reverse direction
+COMMAND_GET_D = 14  # Get motor 4 direction and PWM rate
+COMMAND_ALL_OFF = 15  # Switch everything off
+COMMAND_SET_ALL_FWD = 16  # Set all motors PWM rate in a forwards direction
+COMMAND_SET_ALL_REV = 17  # Set all motors PWM rate in a reverse direction
+COMMAND_SET_FAILSAFE = 18  # Set the failsafe flag, turns the motors off if communication is interrupted
+COMMAND_GET_FAILSAFE = 19  # Get the failsafe flag
+COMMAND_RESET_EPO = 20  # Resets the EPO flag, use after EPO has been tripped and switch is now clear
+COMMAND_GET_EPO = 21  # Get the EPO latched flag
+COMMAND_SET_EPO_IGNORE = 22  # Set the EPO ignored flag, allows the system to run without an EPO
+COMMAND_GET_EPO_IGNORE = 23  # Get the EPO ignored flag
+COMMAND_GET_NEW_IR = 24  # Get the new IR message received flag
+COMMAND_GET_LAST_IR = 25  # Get the last IR message received (long message, resets new IR flag)
+COMMAND_SET_LED_IR = 26  # Set the LED for indicating IR messages
+COMMAND_GET_LED_IR = 27  # Get if the LED is being used to indicate IR messages
+COMMAND_GET_ANALOG_1 = 28  # Get the analog reading from port #1, pin 2
+COMMAND_GET_ANALOG_2 = 29  # Get the analog reading from port #2, pin 4
+COMMAND_GET_ID = 0x99  # Get the board identifier
+COMMAND_SET_I2C_ADD = 0xAA  # Set a new I2C address
 
-COMMAND_VALUE_FWD       = 1     # I2C value representing forward
-COMMAND_VALUE_REV       = 2     # I2C value representing reverse
+COMMAND_VALUE_FWD = 1  # I2C value representing forward
+COMMAND_VALUE_REV = 2  # I2C value representing reverse
 
-COMMAND_VALUE_ON        = 1     # I2C value representing on
-COMMAND_VALUE_OFF       = 0     # I2C value representing off
+COMMAND_VALUE_ON = 1  # I2C value representing on
+COMMAND_VALUE_OFF = 0  # I2C value representing off
 
-COMMAND_ANALOG_MAX      = 0x3FF # Maximum value for analog readings
+COMMAND_ANALOG_MAX = 0x3FF  # Maximum value for analog readings
 
-IR_MAX_BYTES            = I2C_LONG_LEN - 2
+IR_MAX_BYTES = I2C_LONG_LEN - 2
 
-def ScanForZeroBorg(busNumber = 1):
+
+def scan_for_zero_borg(bus_number=1):
     """
-ScanForZeroBorg([busNumber])
+scan_for_zero_borg([bus_number])
 
 Scans the I²C bus for a ZeroBorg boards and returns a list of all usable addresses
-The busNumber if supplied is which I²C bus to scan, 0 for Rev 1 boards, 1 for Rev 2 boards, if not supplied the default is 1
+The bus_number if supplied is which I²C bus to scan, 0 for Rev 1 boards, 1 for Rev 2 boards, if not supplied
+the default is 1
     """
     found = []
-    print 'Scanning I²C bus #%d' % (busNumber)
-    bus = smbus.SMBus(busNumber)
+    print('Scanning I²C bus #%d' % bus_number)
+    bus = smbus.SMBus(bus_number)
     for address in range(0x03, 0x78, 1):
         try:
-            i2cRecv = bus.read_i2c_block_data(address, COMMAND_GET_ID, I2C_NORM_LEN)
-            if len(i2cRecv) == I2C_NORM_LEN:
-                if i2cRecv[1] == I2C_ID_ZEROBORG:
-                    print 'Found ZeroBorg at %02X' % (address)
+            i2c_recv = bus.read_i2c_block_data(address, COMMAND_GET_ID, I2C_NORM_LEN)
+            if len(i2c_recv) == I2C_NORM_LEN:
+                if i2c_recv[1] == I2C_ID_ZEROBORG:
+                    print('Found ZeroBorg at %02X' % address)
                     found.append(address)
                 else:
                     pass
@@ -106,80 +108,83 @@ The busNumber if supplied is which I²C bus to scan, 0 for Rev 1 boards, 1 for Re
         except:
             pass
     if len(found) == 0:
-        print 'No ZeroBorg boards found, is bus #%d correct (should be 0 for Rev 1, 1 for Rev 2)' % (busNumber)
+        print('No ZeroBorg boards found, is bus #%d correct (should be 0 for Rev 1, 1 for Rev 2)' % bus_number)
     elif len(found) == 1:
-        print '1 ZeroBorg board found'
+        print('1 ZeroBorg board found')
     else:
-        print '%d ZeroBorg boards found' % (len(found))
+        print('%d ZeroBorg boards found' % (len(found)))
     return found
 
 
-def SetNewAddress(newAddress, oldAddress = -1, busNumber = 1):
+def set_new_address(new_address, old_address=-1, bus_number=1):
     """
-SetNewAddress(newAddress, [oldAddress], [busNumber])
+set_new_address(new_address, [old_address], [bus_number])
 
 Scans the I²C bus for the first ZeroBorg and sets it to a new I2C address
-If oldAddress is supplied it will change the address of the board at that address rather than scanning the bus
-The busNumber if supplied is which I²C bus to scan, 0 for Rev 1 boards, 1 for Rev 2 boards, if not supplied the default is 1
+If old_address is supplied it will change the address of the board at that address rather than scanning the bus
+The bus_number if supplied is which I²C bus to scan, 0 for Rev 1 boards, 1 for Rev 2 boards, if not supplied
+the default is 1
 Warning, this new I²C address will still be used after resetting the power on the device
     """
-    if newAddress < 0x03:
-        print 'Error, I²C addresses below 3 (0x03) are reserved, use an address between 3 (0x03) and 119 (0x77)'
+    if new_address < 0x03:
+        print('Error, I²C addresses below 3 (0x03) are reserved, use an address between 3 (0x03) and 119 (0x77)')
         return
-    elif newAddress > 0x77:
-        print 'Error, I²C addresses above 119 (0x77) are reserved, use an address between 3 (0x03) and 119 (0x77)'
+    elif new_address > 0x77:
+        print('Error, I²C addresses above 119 (0x77) are reserved, use an address between 3 (0x03) and 119 (0x77)')
         return
-    if oldAddress < 0x0:
-        found = ScanForZeroBorg(busNumber)
+    if old_address < 0x0:
+        found = scan_for_zero_borg(bus_number)
         if len(found) < 1:
-            print 'No ZeroBorg boards found, cannot set a new I²C address!'
+            print('No ZeroBorg boards found, cannot set a new I²C address!')
             return
         else:
-            oldAddress = found[0]
-    print 'Changing I²C address from %02X to %02X (bus #%d)' % (oldAddress, newAddress, busNumber)
-    bus = smbus.SMBus(busNumber)
+            old_address = found[0]
+    print('Changing I²C address from %02X to %02X (bus #%d)' % (old_address, new_address, bus_number))
+    bus = smbus.SMBus(bus_number)
     try:
-        i2cRecv = bus.read_i2c_block_data(oldAddress, COMMAND_GET_ID, I2C_NORM_LEN)
-        if len(i2cRecv) == I2C_NORM_LEN:
-            if i2cRecv[1] == I2C_ID_ZEROBORG:
-                foundChip = True
-                print 'Found ZeroBorg at %02X' % (oldAddress)
+        i2c_recv = bus.read_i2c_block_data(old_address, COMMAND_GET_ID, I2C_NORM_LEN)
+        if len(i2c_recv) == I2C_NORM_LEN:
+            if i2c_recv[1] == I2C_ID_ZEROBORG:
+                found_chip = True
+                print('Found ZeroBorg at %02X' % old_address)
             else:
-                foundChip = False
-                print 'Found a device at %02X, but it is not a ZeroBorg (ID %02X instead of %02X)' % (oldAddress, i2cRecv[1], I2C_ID_ZEROBORG)
+                found_chip = False
+                print('Found a device at %02X, but it is not a ZeroBorg (ID %02X instead of %02X)' % (
+                    old_address, i2c_recv[1], I2C_ID_ZEROBORG))
         else:
-            foundChip = False
-            print 'Missing ZeroBorg at %02X' % (oldAddress)
+            found_chip = False
+            print('Missing ZeroBorg at %02X' % old_address)
     except KeyboardInterrupt:
         raise
     except:
-        foundChip = False
-        print 'Missing ZeroBorg at %02X' % (oldAddress)
-    if foundChip:
-        bus.write_byte_data(oldAddress, COMMAND_SET_I2C_ADD, newAddress)
+        found_chip = False
+        print('Missing ZeroBorg at %02X' % old_address)
+    if found_chip:
+        bus.write_byte_data(old_address, COMMAND_SET_I2C_ADD, new_address)
         time.sleep(0.1)
-        print 'Address changed to %02X, attempting to talk with the new address' % (newAddress)
+        print('Address changed to %02X, attempting to talk with the new address' % new_address)
         try:
-            i2cRecv = bus.read_i2c_block_data(newAddress, COMMAND_GET_ID, I2C_NORM_LEN)
-            if len(i2cRecv) == I2C_NORM_LEN:
-                if i2cRecv[1] == I2C_ID_ZEROBORG:
-                    foundChip = True
-                    print 'Found ZeroBorg at %02X' % (newAddress)
+            i2c_recv = bus.read_i2c_block_data(new_address, COMMAND_GET_ID, I2C_NORM_LEN)
+            if len(i2c_recv) == I2C_NORM_LEN:
+                if i2c_recv[1] == I2C_ID_ZEROBORG:
+                    found_chip = True
+                    print('Found ZeroBorg at %02X' % new_address)
                 else:
-                    foundChip = False
-                    print 'Found a device at %02X, but it is not a ZeroBorg (ID %02X instead of %02X)' % (newAddress, i2cRecv[1], I2C_ID_ZEROBORG)
+                    found_chip = False
+                    print('Found a device at %02X, but it is not a ZeroBorg (ID %02X instead of %02X)' % (
+                        new_address, i2c_recv[1], I2C_ID_ZEROBORG))
             else:
-                foundChip = False
-                print 'Missing ZeroBorg at %02X' % (newAddress)
+                found_chip = False
+                print('Missing ZeroBorg at %02X' % new_address)
         except KeyboardInterrupt:
             raise
         except:
-            foundChip = False
-            print 'Missing ZeroBorg at %02X' % (newAddress)
-    if foundChip:
-        print 'New I²C address of %02X set successfully' % (newAddress)
+            found_chip = False
+            print('Missing ZeroBorg at %02X' % new_address)
+    if found_chip:
+        print('New I²C address of %02X set successfully' % new_address)
     else:
-        print 'Failed to set new I²C address...'
+        print('Failed to set new I²C address...')
 
 
 # Class used to control ZeroBorg
@@ -195,24 +200,22 @@ printFunction           Function reference to call when printing text, if None "
     """
 
     # Shared values used by this class
-    busNumber               = 1                 # Check here for Rev 1 vs Rev 2 and select the correct bus
-    i2cAddress              = I2C_ID_ZEROBORG   # I²C address, override for a different address
-    bus                     = None
-    foundChip               = False
-    printFunction           = None
-
+    busNumber = 1  # Check here for Rev 1 vs Rev 2 and select the correct bus
+    i2cAddress = I2C_ID_ZEROBORG  # I²C address, override for a different address
+    bus = None
+    foundChip = False
+    printFunction = None
 
     def Print(self, message):
         """
 Print(message)
 
-Wrapper used by the ZeroBorg instance to print messages, will call printFunction if set, print otherwise
+Wrapper used by the ZeroBorg instance to print(messages, will call printFunction if set, print(otherwise
         """
-        if self.printFunction == None:
-            print message
+        if self.printFunction is None:
+            print(message)
         else:
             self.printFunction(message)
-
 
     def NoPrint(self, message):
         """
@@ -224,13 +227,13 @@ ZB.printFunction = ZB.NoPrint
         """
         pass
 
-
-    def Init(self, tryOtherBus = True):
+    def init(self, try_other_bus=True):
         """
-Init([tryOtherBus])
+init([try_other_bus])
 
 Prepare the I2C driver for talking to the ZeroBorg
-If tryOtherBus is True or omitted, this function will attempt to use the other bus if the ZeroBorg devices can not be found on the current busNumber
+If try_other_bus is True or omitted, this function will attempt to use the other bus if the ZeroBorg devices
+can not be found on the current busNumber
         """
         self.Print('Loading ZeroBorg on bus %d, address %02X' % (self.busNumber, self.i2cAddress))
 
@@ -239,50 +242,52 @@ If tryOtherBus is True or omitted, this function will attempt to use the other b
 
         # Check for ZeroBorg
         try:
-            i2cRecv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_ID, I2C_NORM_LEN)
-            if len(i2cRecv) == I2C_NORM_LEN:
-                if i2cRecv[1] == I2C_ID_ZEROBORG:
+            i2c_recv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_ID, I2C_NORM_LEN)
+            if len(i2c_recv) == I2C_NORM_LEN:
+                if i2c_recv[1] == I2C_ID_ZEROBORG:
                     self.foundChip = True
-                    self.Print('Found ZeroBorg at %02X' % (self.i2cAddress))
+                    self.Print('Found ZeroBorg at %02X' % self.i2cAddress)
                 else:
                     self.foundChip = False
-                    self.Print('Found a device at %02X, but it is not a ZeroBorg (ID %02X instead of %02X)' % (self.i2cAddress, i2cRecv[1], I2C_ID_ZEROBORG))
+                    self.Print('Found a device at %02X, but it is not a ZeroBorg (ID %02X instead of %02X)' % (
+                        self.i2cAddress, i2c_recv[1], I2C_ID_ZEROBORG))
             else:
                 self.foundChip = False
-                self.Print('Missing ZeroBorg at %02X' % (self.i2cAddress))
+                self.Print('Missing ZeroBorg at %02X' % self.i2cAddress)
         except KeyboardInterrupt:
             raise
         except:
             self.foundChip = False
-            self.Print('Missing ZeroBorg at %02X' % (self.i2cAddress))
+            self.Print('Missing ZeroBorg at %02X' % self.i2cAddress)
 
         # See if we are missing chips
         if not self.foundChip:
             self.Print('ZeroBorg was not found')
-            if tryOtherBus:
+            if try_other_bus:
                 if self.busNumber == 1:
                     self.busNumber = 0
                 else:
                     self.busNumber = 1
-                self.Print('Trying bus %d instead' % (self.busNumber))
-                self.Init(False)
+                self.Print('Trying bus %d instead' % self.busNumber)
+                self.init(False)
             else:
-                self.Print('Are you sure your ZeroBorg is properly attached, the correct address is used, and the I2C drivers are running?')
+                self.Print(
+                    'Are you sure your ZeroBorg is properly attached, the correct address is used, and '
+                    'the I2C drivers are running?')
                 self.bus = None
         else:
-            self.Print('ZeroBorg loaded on bus %d' % (self.busNumber))
+            self.Print('ZeroBorg loaded on bus %d' % self.busNumber)
 
-
-    def SetMotor1(self, power):
+    def set_motor1(self, power):
         """
-SetMotor1(power)
+set_motor1(power)
 
 Sets the drive level for motor 1, from +1 to -1.
 e.g.
-SetMotor1(0)     -> motor 1 is stopped
-SetMotor1(0.75)  -> motor 1 moving forward at 75% power
-SetMotor1(-0.5)  -> motor 1 moving reverse at 50% power
-SetMotor1(1)     -> motor 1 moving forward at 100% power
+set_motor1(0)     -> motor 1 is stopped
+set_motor1(0.75)  -> motor 1 moving forward at 75% power
+set_motor1(-0.5)  -> motor 1 moving reverse at 50% power
+set_motor1(1)     -> motor 1 moving forward at 100% power
         """
         if power < 0:
             # Reverse
@@ -304,10 +309,9 @@ SetMotor1(1)     -> motor 1 moving forward at 100% power
         except:
             self.Print('Failed sending motor 1 drive level!')
 
-
-    def GetMotor1(self):
+    def get_motor1(self):
         """
-power = GetMotor1()
+power = get_motor1()
 
 Gets the drive level for motor 1, from +1 to -1.
 e.g.
@@ -317,33 +321,32 @@ e.g.
 1     -> motor 1 moving forward at 100% power
         """
         try:
-            i2cRecv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_A, I2C_NORM_LEN)
+            i2c_recv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_A, I2C_NORM_LEN)
         except KeyboardInterrupt:
             raise
         except:
             self.Print('Failed reading motor 1 drive level!')
             return
 
-        power = float(i2cRecv[2]) / float(PWM_MAX)
+        power = float(i2c_recv[2]) / float(PWM_MAX)
 
-        if i2cRecv[1] == COMMAND_VALUE_FWD:
+        if i2c_recv[1] == COMMAND_VALUE_FWD:
             return power
-        elif i2cRecv[1] == COMMAND_VALUE_REV:
+        elif i2c_recv[1] == COMMAND_VALUE_REV:
             return -power
         else:
             return
 
-
-    def SetMotor2(self, power):
+    def set_motor2(self, power):
         """
-SetMotor1(power)
+set_motor1(power)
 
 Sets the drive level for motor 2, from +1 to -1.
 e.g.
-SetMotor2(0)     -> motor 2 is stopped
-SetMotor2(0.75)  -> motor 2 moving forward at 75% power
-SetMotor2(-0.5)  -> motor 2 moving reverse at 50% power
-SetMotor2(1)     -> motor 2 moving forward at 100% power
+set_motor2(0)     -> motor 2 is stopped
+set_motor2(0.75)  -> motor 2 moving forward at 75% power
+set_motor2(-0.5)  -> motor 2 moving reverse at 50% power
+set_motor2(1)     -> motor 2 moving forward at 100% power
         """
         if power < 0:
             # Reverse
@@ -365,10 +368,9 @@ SetMotor2(1)     -> motor 2 moving forward at 100% power
         except:
             self.Print('Failed sending motor 2 drive level!')
 
-
-    def GetMotor2(self):
+    def get_motor2(self):
         """
-power = GetMotor2()
+power = get_motor2()
 
 Gets the drive level for motor 2, from +1 to -1.
 e.g.
@@ -378,33 +380,32 @@ e.g.
 1     -> motor 2 moving forward at 100% power
         """
         try:
-            i2cRecv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_B, I2C_NORM_LEN)
+            i2c_recv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_B, I2C_NORM_LEN)
         except KeyboardInterrupt:
             raise
         except:
             self.Print('Failed reading motor 2 drive level!')
             return
 
-        power = float(i2cRecv[2]) / float(PWM_MAX)
+        power = float(i2c_recv[2]) / float(PWM_MAX)
 
-        if i2cRecv[1] == COMMAND_VALUE_FWD:
+        if i2c_recv[1] == COMMAND_VALUE_FWD:
             return power
-        elif i2cRecv[1] == COMMAND_VALUE_REV:
+        elif i2c_recv[1] == COMMAND_VALUE_REV:
             return -power
         else:
             return
 
-
-    def SetMotor3(self, power):
+    def set_motor3(self, power):
         """
-SetMotor3(power)
+set_motor3(power)
 
 Sets the drive level for motor 3, from +1 to -1.
 e.g.
-SetMotor3(0)     -> motor 3 is stopped
-SetMotor3(0.75)  -> motor 3 moving forward at 75% power
-SetMotor3(-0.5)  -> motor 3 moving reverse at 50% power
-SetMotor3(1)     -> motor 3 moving forward at 100% power
+set_motor3(0)     -> motor 3 is stopped
+set_motor3(0.75)  -> motor 3 moving forward at 75% power
+set_motor3(-0.5)  -> motor 3 moving reverse at 50% power
+set_motor3(1)     -> motor 3 moving forward at 100% power
         """
         if power < 0:
             # Reverse
@@ -426,10 +427,9 @@ SetMotor3(1)     -> motor 3 moving forward at 100% power
         except:
             self.Print('Failed sending motor 3 drive level!')
 
-
-    def GetMotor3(self):
+    def i2c_recv(self):
         """
-power = GetMotor3()
+power = get_motor3()
 
 Gets the drive level for motor 3, from +1 to -1.
 e.g.
@@ -439,33 +439,32 @@ e.g.
 1     -> motor 3 moving forward at 100% power
         """
         try:
-            i2cRecv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_C, I2C_NORM_LEN)
+            i2c_recv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_C, I2C_NORM_LEN)
         except KeyboardInterrupt:
             raise
         except:
             self.Print('Failed reading motor 3 drive level!')
             return
 
-        power = float(i2cRecv[2]) / float(PWM_MAX)
+        power = float(i2c_recv[2]) / float(PWM_MAX)
 
-        if i2cRecv[1] == COMMAND_VALUE_FWD:
+        if i2c_recv[1] == COMMAND_VALUE_FWD:
             return power
-        elif i2cRecv[1] == COMMAND_VALUE_REV:
+        elif i2c_recv[1] == COMMAND_VALUE_REV:
             return -power
         else:
             return
 
-
-    def SetMotor4(self, power):
+    def set_motor4(self, power):
         """
-SetMotor4(power)
+set_motor4(power)
 
 Sets the drive level for motor 4, from +1 to -1.
 e.g.
-SetMotor4(0)     -> motor 4 is stopped
-SetMotor4(0.75)  -> motor 4 moving forward at 75% power
-SetMotor4(-0.5)  -> motor 4 moving reverse at 50% power
-SetMotor4(1)     -> motor 4 moving forward at 100% power
+set_motor4(0)     -> motor 4 is stopped
+set_motor4(0.75)  -> motor 4 moving forward at 75% power
+set_motor4(-0.5)  -> motor 4 moving reverse at 50% power
+set_motor4(1)     -> motor 4 moving forward at 100% power
         """
         if power < 0:
             # Reverse
@@ -487,10 +486,9 @@ SetMotor4(1)     -> motor 4 moving forward at 100% power
         except:
             self.Print('Failed sending motor 4 drive level!')
 
-
-    def GetMotor4(self):
+    def get_motor4(self):
         """
-power = GetMotor4()
+power = get_motor4()
 
 Gets the drive level for motor 4, from +1 to -1.
 e.g.
@@ -500,33 +498,32 @@ e.g.
 1     -> motor 4 moving forward at 100% power
         """
         try:
-            i2cRecv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_D, I2C_NORM_LEN)
+            i2c_recv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_D, I2C_NORM_LEN)
         except KeyboardInterrupt:
             raise
         except:
             self.Print('Failed reading motor 4 drive level!')
             return
 
-        power = float(i2cRecv[2]) / float(PWM_MAX)
+        power = float(i2c_recv[2]) / float(PWM_MAX)
 
-        if i2cRecv[1] == COMMAND_VALUE_FWD:
+        if i2c_recv[1] == COMMAND_VALUE_FWD:
             return power
-        elif i2cRecv[1] == COMMAND_VALUE_REV:
+        elif i2c_recv[1] == COMMAND_VALUE_REV:
             return -power
         else:
             return
 
-
-    def SetMotors(self, power):
+    def set_motors(self, power):
         """
-SetMotors(power)
+set_motors(power)
 
 Sets the drive level for all motors, from +1 to -1.
 e.g.
-SetMotors(0)     -> all motors are stopped
-SetMotors(0.75)  -> all motors are moving forward at 75% power
-SetMotors(-0.5)  -> all motors are moving reverse at 50% power
-SetMotors(1)     -> all motors are moving forward at 100% power
+set_motors(0)     -> all motors are stopped
+set_motors(0.75)  -> all motors are moving forward at 75% power
+set_motors(-0.5)  -> all motors are moving reverse at 50% power
+set_motors(1)     -> all motors are moving forward at 100% power
         """
         if power < 0:
             # Reverse
@@ -548,10 +545,9 @@ SetMotors(1)     -> all motors are moving forward at 100% power
         except:
             self.Print('Failed sending all motors drive level!')
 
-
-    def MotorsOff(self):
+    def motors_off(self):
         """
-MotorsOff()
+motors_off()
 
 Sets all motors to stopped, useful when ending a program
         """
@@ -562,10 +558,9 @@ Sets all motors to stopped, useful when ending a program
         except:
             self.Print('Failed sending motors off command!')
 
-
-    def SetLed(self, state):
+    def set_led(self, state):
         """
-SetLed(state)
+set_led(state)
 
 Sets the current state of the LED, False for off, True for on
         """
@@ -581,30 +576,28 @@ Sets the current state of the LED, False for off, True for on
         except:
             self.Print('Failed sending LED state!')
 
-
-    def GetLed(self):
+    def get_led(self):
         """
-state = GetLed()
+state = get_led()
 
 Reads the current state of the LED, False for off, True for on
-        """ 
+        """
         try:
-            i2cRecv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_LED, I2C_NORM_LEN)
+            i2c_recv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_LED, I2C_NORM_LEN)
         except KeyboardInterrupt:
             raise
         except:
             self.Print('Failed reading LED state!')
             return
 
-        if i2cRecv[1] == COMMAND_VALUE_OFF:
+        if i2c_recv[1] == COMMAND_VALUE_OFF:
             return False
         else:
             return True
 
-
-    def ResetEpo(self):
+    def reset_epo(self):
         """
-ResetEpo()
+reset_epo()
 
 Resets the EPO latch state, use to allow movement again after the EPO has been tripped
         """
@@ -615,33 +608,31 @@ Resets the EPO latch state, use to allow movement again after the EPO has been t
         except:
             self.Print('Failed resetting EPO!')
 
-
-    def GetEpo(self):
+    def get_epo(self):
         """
-state = GetEpo()
+state = get_epo()
 
 Reads the system EPO latch state.
 If False the EPO has not been tripped, and movement is allowed.
-If True the EPO has been tripped, movement is disabled if the EPO is not ignored (see SetEpoIgnore)
-    Movement can be re-enabled by calling ResetEpo.
-        """ 
+If True the EPO has been tripped, movement is disabled if the EPO is not ignored (see set_epo_ignore)
+    Movement can be re-enabled by calling reset_epo.
+        """
         try:
-            i2cRecv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_EPO, I2C_NORM_LEN)
+            i2c_recv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_EPO, I2C_NORM_LEN)
         except KeyboardInterrupt:
             raise
         except:
             self.Print('Failed reading EPO ignore state!')
             return
 
-        if i2cRecv[1] == COMMAND_VALUE_OFF:
+        if i2c_recv[1] == COMMAND_VALUE_OFF:
             return False
         else:
             return True
 
-
-    def SetEpoIgnore(self, state):
+    def set_epo_ignore(self, state):
         """
-SetEpoIgnore(state)
+set_epo_ignore(state)
 
 Sets the system to ignore or use the EPO latch, set to False if you have an EPO switch, True if you do not
         """
@@ -657,59 +648,56 @@ Sets the system to ignore or use the EPO latch, set to False if you have an EPO 
         except:
             self.Print('Failed sending EPO ignore state!')
 
-
-    def GetEpoIgnore(self):
+    def get_epo_ignore(self):
         """
-state = GetEpoIgnore()
+state = get_epo_ignore()
 
 Reads the system EPO ignore state, False for using the EPO latch, True for ignoring the EPO latch
-        """ 
+        """
         try:
-            i2cRecv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_EPO_IGNORE, I2C_NORM_LEN)
+            i2c_recv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_EPO_IGNORE, I2C_NORM_LEN)
         except KeyboardInterrupt:
             raise
         except:
             self.Print('Failed reading EPO ignore state!')
             return
 
-        if i2cRecv[1] == COMMAND_VALUE_OFF:
+        if i2c_recv[1] == COMMAND_VALUE_OFF:
             return False
         else:
             return True
 
-
-    def HasNewIrMessage(self):
+    def has_new_ir_message(self):
         """
-state = HasNewIrMessage()
+state = has_new_ir_message()
 
 Reads the new IR message received flag.
 If False there has been no messages to the IR sensor since the last read.
-If True there has been a new IR message which can be read using GetIrMessage().
-        """ 
+If True there has been a new IR message which can be read using get_ir_message().
+        """
         try:
-            i2cRecv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_NEW_IR, I2C_NORM_LEN)
+            i2c_recv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_NEW_IR, I2C_NORM_LEN)
         except KeyboardInterrupt:
             raise
         except:
             self.Print('Failed reading new IR message received flag!')
             return
 
-        if i2cRecv[1] == COMMAND_VALUE_OFF:
+        if i2c_recv[1] == COMMAND_VALUE_OFF:
             return False
         else:
             return True
 
-
-    def GetIrMessage(self):
+    def get_ir_message(self):
         """
-message = GetIrMessage()
+message = get_ir_message()
 
 Reads the last IR message which has been received and clears the new IR message received flag.
 Returns the bytes from the remote control as a hexadecimal string, e.g. 'F75AD5AA8000'
-Use HasNewIrMessage() to see if there has been a new IR message since the last call.
-        """ 
+Use has_new_ir_message() to see if there has been a new IR message since the last call.
+        """
         try:
-            i2cRecv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_LAST_IR, I2C_LONG_LEN)
+            i2c_recv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_LAST_IR, I2C_LONG_LEN)
         except KeyboardInterrupt:
             raise
         except:
@@ -718,13 +706,12 @@ Use HasNewIrMessage() to see if there has been a new IR message since the last c
 
         message = ''
         for i in range(IR_MAX_BYTES):
-            message += '%02X' % (i2cRecv[1+i])
+            message += '%02X' % (i2c_recv[1 + i])
         return message.rstrip('0')
 
-
-    def SetLedIr(self, state):
+    def set_led_ir(self, state):
         """
-SetLedIr(state)
+set_led_ir(state)
 
 Sets if IR messages control the state of the LED, False for no effect, True for incoming messages blink the LED
         """
@@ -740,70 +727,66 @@ Sets if IR messages control the state of the LED, False for no effect, True for 
         except:
             self.Print('Failed sending LED state!')
 
-
-    def GetLedIr(self):
+    def get_led_ir(self):
         """
-state = GetLedIr()
+state = get_led_ir()
 
 Reads if IR messages control the state of the LED, False for no effect, True for incoming messages blink the LED
-        """ 
+        """
         try:
-            i2cRecv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_LED_IR, I2C_NORM_LEN)
+            i2c_recv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_LED_IR, I2C_NORM_LEN)
         except KeyboardInterrupt:
             raise
         except:
             self.Print('Failed reading LED state!')
             return
 
-        if i2cRecv[1] == COMMAND_VALUE_OFF:
+        if i2c_recv[1] == COMMAND_VALUE_OFF:
             return False
         else:
             return True
 
-
-    def GetAnalog1(self):
+    def get_analog1(self):
         """
-voltage = GetAnalog1()
+voltage = get_analog1()
 
 Reads the current analog level from port #1 (pin 2).
 Returns the value as a voltage based on the 3.3 V reference pin (pin 1).
-        """ 
+        """
         try:
-            i2cRecv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_ANALOG_1, I2C_NORM_LEN)
+            i2c_recv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_ANALOG_1, I2C_NORM_LEN)
         except KeyboardInterrupt:
             raise
         except:
             self.Print('Failed reading analog level #1!')
             return
 
-        raw = (i2cRecv[1] << 8) + i2cRecv[2]
+        raw = (i2c_recv[1] << 8) + i2c_recv[2]
         level = float(raw) / float(COMMAND_ANALOG_MAX)
         return level * 3.3
 
-
-    def GetAnalog2(self):
+    def get_analog2(self):
         """
-voltage = GetAnalog2()
+voltage = get_analog2()
 
 Reads the current analog level from port #2 (pin 4).
 Returns the value as a voltage based on the 3.3 V reference pin (pin 1).
-        """ 
+        """
         try:
-            i2cRecv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_ANALOG_2, I2C_NORM_LEN)
+            i2c_recv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_ANALOG_2, I2C_NORM_LEN)
         except KeyboardInterrupt:
             raise
         except:
             self.Print('Failed reading analog level #2!')
             return
 
-        raw = (i2cRecv[1] << 8) + i2cRecv[2]
+        raw = (i2c_recv[1] << 8) + i2c_recv[2]
         level = float(raw) / float(COMMAND_ANALOG_MAX)
         return level * 3.3
 
-
-    def SetCommsFailsafe(self, state):
+    def set_comms_failsafe(self, state):
         """
-SetCommsFailsafe(state)
+set_comms_failsafe(state)
 
 Sets the system to enable or disable the communications failsafe
 The failsafe will turn the motors off unless it is commanded at least once every 1/4 of a second
@@ -822,39 +805,37 @@ The failsafe is disabled at power on
         except:
             self.Print('Failed sending communications failsafe state!')
 
-
-    def GetCommsFailsafe(self):
+    def get_comms_failsafe(self):
         """
-state = GetCommsFailsafe()
+state = get_comms_failsafe()
 
 Read the current system state of the communications failsafe, True for enabled, False for disabled
 The failsafe will turn the motors off unless it is commanded at least once every 1/4 of a second
-        """ 
+        """
         try:
-            i2cRecv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_FAILSAFE, I2C_NORM_LEN)
+            i2c_recv = self.bus.read_i2c_block_data(self.i2cAddress, COMMAND_GET_FAILSAFE, I2C_NORM_LEN)
         except KeyboardInterrupt:
             raise
         except:
             self.Print('Failed reading communications failsafe state!')
             return
 
-        if i2cRecv[1] == COMMAND_VALUE_OFF:
+        if i2c_recv[1] == COMMAND_VALUE_OFF:
             return False
         else:
             return True
 
-
-    def Help(self):
+    def help(self):
         """
-Help()
+help()
 
 Displays the names and descriptions of the various functions and settings provided
         """
-        funcList = [ZeroBorg.__dict__.get(a) for a in dir(ZeroBorg) if isinstance(ZeroBorg.__dict__.get(a), types.FunctionType)]
-        funcListSorted = sorted(funcList, key = lambda x: x.func_code.co_firstlineno)
+        func_list = [ZeroBorg.__dict__.get(a) for a in dir(ZeroBorg) if
+                    isinstance(ZeroBorg.__dict__.get(a), types.FunctionType)]
+        func_list_sorted = sorted(func_list, key=lambda x: x.func_code.co_firstlineno)
 
-        print self.__doc__
-        print
-        for func in funcListSorted:
-            print '=== %s === %s' % (func.func_name, func.func_doc)
-
+        print(self.__doc__)
+        print()
+        for func in func_list_sorted:
+            print('=== %s === %s' % (func.func_name, func.func_doc))

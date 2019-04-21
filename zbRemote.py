@@ -10,9 +10,9 @@ import ZeroBorg
 # Setup the ZeroBorg
 ZB = ZeroBorg.ZeroBorg()
 #ZB.i2cAddress = 0x40                  # Uncomment and change the value if you have changed the board address
-ZB.Init()
+ZB.init()
 if not ZB.foundChip:
-    boards = ZeroBorg.ScanForZeroBorg()
+    boards = ZeroBorg.scan_for_zero_borg()
     if len(boards) == 0:
         print 'No ZeroBorg found, check you are attached :)'
     else:
@@ -22,9 +22,9 @@ if not ZB.foundChip:
         print 'If you need to change the I²C address change the setup line so it is correct, e.g.'
         print 'ZB.i2cAddress = 0x%02X' % (boards[0])
     sys.exit()
-#ZB.SetEpoIgnore(True)                 # Uncomment to disable EPO latch, needed if you do not have a switch / jumper
-ZB.SetCommsFailsafe(False)
-ZB.ResetEpo()
+#ZB.set_epo_ignore(True)                 # Uncomment to disable EPO latch, needed if you do not have a switch / jumper
+ZB.set_comms_failsafe(False)
+ZB.reset_epo()
 
 # Power settings
 voltageIn = 8.4                         # Total battery voltage to the ZeroBorg (change to 9V if using a non-rechargeable battery)
@@ -39,10 +39,10 @@ else:
 # Remote control commands
 def Move(left, right):
     print '%0.2f | %0.2f' % (left, right)
-    ZB.SetMotor1(-left * maxPower)
-    ZB.SetMotor2(-left * maxPower)
-    ZB.SetMotor3(right * maxPower)
-    ZB.SetMotor4(right * maxPower)  
+    ZB.set_motor1(-left * maxPower)
+    ZB.set_motor2(-left * maxPower)
+    ZB.set_motor3(right * maxPower)
+    ZB.set_motor4(right * maxPower)
 
 def MoveForward():
     Move(+1.0, +1.0)
@@ -103,24 +103,24 @@ interval = 0.10                         # Time between updates in seconds, small
 holdToMove = True                       # If True the remote button has to be held. False means it does not
 
 # Hold the LED on for a couple of seconds to indicate we are ready
-ZB.SetLedIr(False)
-ZB.SetLed(True)
+ZB.set_led_ir(False)
+ZB.set_led(True)
 time.sleep(2.0)
-ZB.SetLed(False)
+ZB.set_led(False)
 
 # The remote decoding loop
 global running
 running = True
-ZB.SetLedIr(True)
+ZB.set_led_ir(True)
 try:
     print 'Press CTRL+C to quit'
     print 'Press the power button on the remote to shutdown the Raspberry Pi'
     # Loop indefinitely
     while running:
         # See if there is a button held
-        if ZB.HasNewIrMessage():
+        if ZB.has_new_ir_message():
             # A button is pressed, see what it is:
-            pressedButtonCode = ZB.GetIrMessage()
+            pressedButtonCode = ZB.get_ir_message()
             if buttonCommands.has_key(pressedButtonCode):
                 # We know this code, run the command
                 buttonCommands[pressedButtonCode]()
@@ -134,10 +134,10 @@ try:
         # Wait for the interval period
         time.sleep(interval)
     # Disable all drives
-    ZB.MotorsOff()
+    ZB.motors_off()
     # Shutdown the Raspberry Pi
     os.system("sudo halt")
 except KeyboardInterrupt:
     # CTRL+C exit, disable all drives
-    ZB.MotorsOff()
+    ZB.motors_off()
 print

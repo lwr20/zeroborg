@@ -14,9 +14,9 @@ waitBetweenReads    = 0.01
 # Setup the ZeroBorg
 ZB = ZeroBorg.ZeroBorg()
 #ZB.i2cAddress = 0x40                   # Uncomment and change the value if you have changed the board address
-ZB.Init()
+ZB.init()
 if not ZB.foundChip:
-    boards = ZeroBorg.ScanForZeroBorg()
+    boards = ZeroBorg.scan_for_zero_borg()
     if len(boards) == 0:
         print 'No ZeroBorg found, check you are attached :)'
     else:
@@ -26,10 +26,10 @@ if not ZB.foundChip:
         print 'If you need to change the I²C address change the setup line so it is correct, e.g.'
         print 'ZB.i2cAddress = 0x%02X' % (boards[0])
     sys.exit()
-#ZB.SetEpoIgnore(True)                 # Uncomment to disable EPO latch, needed if you do not have a switch / jumper
-ZB.ResetEpo()
+#ZB.set_epo_ignore(True)                 # Uncomment to disable EPO latch, needed if you do not have a switch / jumper
+ZB.reset_epo()
 
-ZB.SetLedIr(True)
+ZB.set_led_ir(True)
 print ''
 if replaceExisting:
     fOut = open(filePath, 'w')
@@ -45,15 +45,15 @@ while True:
         break
     print 'Keep holding the button down...'
     # Start by reading any existing messages to clear the new message flag
-    ZB.GetIrMessage()
+    ZB.get_ir_message()
     startTime = time.time()
     messages = {}
     # Loop for the set timeout
     while (time.time() - startTime) < secondsToScan:
         # See if there is a new message
-        if ZB.HasNewIrMessage():
+        if ZB.has_new_ir_message():
             # Store a count of each received message
-            messageData = ZB.GetIrMessage()
+            messageData = ZB.get_ir_message()
             if messages.has_key(messageData):
                 messages[messageData] += 1
             else:
@@ -78,6 +78,6 @@ while True:
         setting = 'IR_%s = "%s"\n' % (buttonName, messageScores[0][1])
         print 'Adding ' + setting
         fOut.write(setting)
-ZB.SetLedIr(False)
+ZB.set_led_ir(False)
 fOut.close()
 print 'Done'

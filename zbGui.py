@@ -9,10 +9,10 @@ import Tkinter
 # Setup the ZeroBorg
 global ZB
 ZB = ZeroBorg.ZeroBorg()            # Create a new ZeroBorg object
-ZB.Init()                           # Set the board up (checks the board is connected)
-ZB.ResetEpo()                       # Reset the stop switch (EPO) state
+ZB.init()                           # Set the board up (checks the board is connected)
+ZB.reset_epo()                       # Reset the stop switch (EPO) state
                                     # if you do not have a switch across the two pin header then fit the jumper
-ZB.SetLedIr(True)                   # Set the LED to flash when an infrared signal is present
+ZB.set_led_ir(True)                   # Set the LED to flash when an infrared signal is present
 
 # Build a button to name mapping
 buttonMap = {}
@@ -79,17 +79,17 @@ class ZeroBorg_tk(Tkinter.Tk):
         self.resizable(True, True)
         self.geometry('600x600')
         # Setup the initial motor state
-        ZB.MotorsOff()
+        ZB.motors_off()
         # Start polling for readings
-        ZB.GetIrMessage()
+        ZB.get_ir_message()
         self.lastIR = '-none-'
         self.lastButton = '-none-'
         self.after(1, self.Poll)
 
     # Polling function
     def Poll(self):
-        if ZB.HasNewIrMessage():
-            self.lastIR = ZB.GetIrMessage()
+        if ZB.has_new_ir_message():
+            self.lastIR = ZB.get_ir_message()
             if buttonMap.has_key(self.lastIR):
                 self.lastButton = buttonMap[self.lastIR]
             else:
@@ -97,8 +97,8 @@ class ZeroBorg_tk(Tkinter.Tk):
             self.lblIR['text'] = 'IR: %s\nCode: %s' % (self.lastButton, self.lastIR)
         else:
             self.lblIR['text'] = 'No IR\nLast: %s' % (self.lastButton)
-        analog1 = ZB.GetAnalog1()
-        analog2 = ZB.GetAnalog2()
+        analog1 = ZB.get_analog1()
+        analog2 = ZB.get_analog2()
         self.lblAnalog1['text'] = '%01.2f V' % (analog1)
         self.lblAnalog2['text'] = '%01.2f V' % (analog2)
 
@@ -109,33 +109,33 @@ class ZeroBorg_tk(Tkinter.Tk):
     def OnExit(self):
         global ZB
         # Turn drives off and end the program
-        ZB.MotorsOff()
+        ZB.motors_off()
         self.quit()
   
     # Called when sld1 is moved
     def sld1_move(self, value):
         global ZB
-        ZB.SetMotor1(float(value) / 100.0)
+        ZB.set_motor1(float(value) / 100.0)
 
     # Called when sld2 is moved
     def sld2_move(self, value):
         global ZB
-        ZB.SetMotor2(float(value) / 100.0)
+        ZB.set_motor2(float(value) / 100.0)
 
     # Called when sld3 is moved
     def sld3_move(self, value):
         global ZB
-        ZB.SetMotor3(float(value) / 100.0)
+        ZB.set_motor3(float(value) / 100.0)
 
     # Called when sld4 is moved
     def sld4_move(self, value):
         global ZB
-        ZB.SetMotor4(float(value) / 100.0)
+        ZB.set_motor4(float(value) / 100.0)
 
     # Called when butOff is clicked
     def butOff_click(self):
         global ZB
-        ZB.MotorsOff()
+        ZB.motors_off()
         self.sld1.set(0)
         self.sld2.set(0)
         self.sld3.set(0)

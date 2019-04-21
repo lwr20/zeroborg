@@ -162,7 +162,7 @@ IR_info = "FAD6DAD5"
 IR_power = "FB5AD5AA"
 IR_wide = "FB5B6D56AD"
 ```
-In order to use the names in your own script you can then check the value from `GetIrMessage` like this:
+In order to use the names in your own script you can then check the value from `get_ir_message` like this:
 ```python
 import zbIrButtonMap.py as Buttons
 # ...

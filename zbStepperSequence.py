@@ -31,9 +31,9 @@ global ZB
 # Setup the ZeroBorg
 ZB = ZeroBorg.ZeroBorg()
 #ZB.i2cAddress = 0x44                   # Uncomment and change the value if you have changed the board address
-ZB.Init()
+ZB.init()
 if not ZB.foundChip:
-    boards = ZeroBorg.ScanForZeroBorg()
+    boards = ZeroBorg.scan_for_zero_borg()
     if len(boards) == 0:
         print 'No ZeroBorg found, check you are attached :)'
     else:
@@ -43,8 +43,8 @@ if not ZB.foundChip:
         print 'If you need to change the I²C address change the setup line so it is correct, e.g.'
         print 'ZB.i2cAddress = 0x%02X' % (boards[0])
     sys.exit()
-#ZB.SetEpoIgnore(True)                 # Uncomment to disable EPO latch, needed if you do not have a switch / jumper
-ZB.ResetEpo()
+#ZB.set_epo_ignore(True)                 # Uncomment to disable EPO latch, needed if you do not have a switch / jumper
+ZB.reset_epo()
 
 # Stepper movement thread
 class StepperController(threading.Thread):
@@ -87,11 +87,11 @@ class StepperController(threading.Thread):
             if self.step == -1:
                 drive = sequence[-1]
                 if stepper == 1:
-                    ZB.SetMotor1(drive[0])
-                    ZB.SetMotor2(drive[1])
+                    ZB.set_motor1(drive[0])
+                    ZB.set_motor2(drive[1])
                 elif stepper == 2:
-                    ZB.SetMotor3(drive[0])
-                    ZB.SetMotor4(drive[1])
+                    ZB.set_motor3(drive[0])
+                    ZB.set_motor4(drive[1])
                 self.step = 0
                 time.sleep(timedDelay)
             else:
@@ -107,11 +107,11 @@ class StepperController(threading.Thread):
             if self.step < len(sequence):
                 drive = sequence[self.step]
                 if stepper == 1:
-                    ZB.SetMotor1(drive[0])
-                    ZB.SetMotor2(drive[1])
+                    ZB.set_motor1(drive[0])
+                    ZB.set_motor2(drive[1])
                 elif stepper == 2:
-                    ZB.SetMotor3(drive[0])
-                    ZB.SetMotor4(drive[1])
+                    ZB.set_motor3(drive[0])
+                    ZB.set_motor4(drive[1])
             time.sleep(timedDelay)
             count -= 1
 
@@ -147,7 +147,7 @@ class StepperController(threading.Thread):
                 pass
 
 # Start by turning all drives off
-ZB.MotorsOff()
+ZB.motors_off()
 
 # Setup a thread for each stepper
 leftStepper  = StepperController(1)      # Left stepper motor (M1 and M2)
@@ -198,6 +198,6 @@ except KeyboardInterrupt:
     rightStepper.terminated = True
     leftStepper.join()
     rightStepper.join()
-    ZB.MotorsOff()
+    ZB.motors_off()
     print 'Terminated'
 

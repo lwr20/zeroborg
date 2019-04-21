@@ -22,9 +22,9 @@ global ZB
 # Setup the ZeroBorg
 ZB = ZeroBorg.ZeroBorg()
 #ZB.i2cAddress = 0x44                   # Uncomment and change the value if you have changed the board address
-ZB.Init()
+ZB.init()
 if not ZB.foundChip:
-    boards = ZeroBorg.ScanForZeroBorg()
+    boards = ZeroBorg.scan_for_zero_borg()
     if len(boards) == 0:
         print 'No ZeroBorg found, check you are attached :)'
     else:
@@ -34,8 +34,8 @@ if not ZB.foundChip:
         print 'If you need to change the I²C address change the setup line so it is correct, e.g.'
         print 'ZB.i2cAddress = 0x%02X' % (boards[0])
     sys.exit()
-#ZB.SetEpoIgnore(True)                 # Uncomment to disable EPO latch, needed if you do not have a switch / jumper
-ZB.ResetEpo()
+#ZB.set_epo_ignore(True)                 # Uncomment to disable EPO latch, needed if you do not have a switch / jumper
+ZB.reset_epo()
 step = -1
 
 # Function to perform a sequence of steps as fast as allowed
@@ -55,8 +55,8 @@ def MoveStep(count):
         # Set a starting position if this is the first move
         if step == -1:
             drive = sequence[-1]
-            ZB.SetMotor1(drive[0])
-            ZB.SetMotor2(drive[1])
+            ZB.set_motor1(drive[0])
+            ZB.set_motor2(drive[1])
             step = 0
         else:
             step += dir
@@ -70,30 +70,30 @@ def MoveStep(count):
         # For this step set the required drive values
         if step < len(sequence):
             drive = sequence[step]
-            ZB.SetMotor1(drive[0])
-            ZB.SetMotor2(drive[1])
+            ZB.set_motor1(drive[0])
+            ZB.set_motor2(drive[1])
         time.sleep(stepDelay)
         count -= 1
 
 try:
     # Start by turning all drives off
-    ZB.MotorsOff()
+    ZB.motors_off()
     # Loop forever
     while True:
         # Ask the user how many steps to move
         steps = input("Steps to move (-ve for reverse, 0 to quit): ")
         if steps == 0:
             # Turn off the drives and release the GPIO pins
-            ZB.MotorsOff()
+            ZB.motors_off()
             print 'Goodbye'
             break
         else:
             # Move the specified amount of steps
             MoveStep(steps)
             # Turn the motor off after moving
-            ZB.MotorsOff()
+            ZB.motors_off()
 except KeyboardInterrupt:
     # CTRL+C exit, turn off the drives and release the GPIO pins
-    ZB.MotorsOff()
+    ZB.motors_off()
     print 'Terminated'
 

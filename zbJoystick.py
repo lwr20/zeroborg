@@ -14,9 +14,9 @@ sys.stdout = sys.stderr
 # Setup the ZeroBorg
 ZB = ZeroBorg.ZeroBorg()
 #ZB.i2cAddress = 0x44                  # Uncomment and change the value if you have changed the board address
-ZB.Init()
+ZB.init()
 if not ZB.foundChip:
-    boards = ZeroBorg.ScanForZeroBorg()
+    boards = ZeroBorg.scan_for_zero_borg()
     if len(boards) == 0:
         print 'No ZeroBorg found, check you are attached :)'
     else:
@@ -26,18 +26,18 @@ if not ZB.foundChip:
         print 'If you need to change the I²C address change the setup line so it is correct, e.g.'
         print 'ZB.i2cAddress = 0x%02X' % (boards[0])
     sys.exit()
-#ZB.SetEpoIgnore(True)                 # Uncomment to disable EPO latch, needed if you do not have a switch / jumper
+#ZB.set_epo_ignore(True)                 # Uncomment to disable EPO latch, needed if you do not have a switch / jumper
 # Ensure the communications failsafe has been enabled!
 failsafe = False
 for i in range(5):
-    ZB.SetCommsFailsafe(True)
-    failsafe = ZB.GetCommsFailsafe()
+    ZB.set_comms_failsafe(True)
+    failsafe = ZB.get_comms_failsafe()
     if failsafe:
         break
 if not failsafe:
     print 'Board %02X failed to report in failsafe mode!' % (ZB.i2cAddress)
     sys.exit()
-ZB.ResetEpo()
+ZB.reset_epo()
 
 # Settings for the joystick
 axisUpDown = 1                          # Joystick axis to read for up / down position
@@ -61,7 +61,7 @@ else:
     maxPower = voltageOut / float(voltageIn)
 
 # Setup pygame and wait for the joystick to become available
-ZB.MotorsOff()
+ZB.motors_off()
 os.environ["SDL_VIDEODRIVER"] = "dummy" # Removes the need to have a GUI window
 pygame.init()
 #pygame.display.set_mode((1,1))
@@ -73,7 +73,7 @@ while True:
             # Attempt to setup the joystick
             if pygame.joystick.get_count() < 1:
                 # No joystick attached, toggle the LED
-                ZB.SetLed(not ZB.GetLed())
+                ZB.set_led(not ZB.get_led())
                 pygame.joystick.quit()
                 time.sleep(0.1)
             else:
@@ -82,17 +82,17 @@ while True:
                 break
         except pygame.error:
             # Failed to connect to the joystick, toggle the LED
-            ZB.SetLed(not ZB.GetLed())
+            ZB.set_led(not ZB.get_led())
             pygame.joystick.quit()
             time.sleep(0.1)
     except KeyboardInterrupt:
         # CTRL+C exit, give up
         print '\nUser aborted'
-        ZB.SetLed(True)
+        ZB.set_led(True)
         sys.exit()
 print 'Joystick found'
 joystick.init()
-ZB.SetLed(False)
+ZB.set_led(False)
 
 try:
     print 'Press CTRL+C to quit'
@@ -142,22 +142,22 @@ try:
                     driveRight *= 1.0 - (2.0 * leftRight)
                 # Check for button presses
                 if joystick.get_button(buttonResetEpo):
-                    ZB.ResetEpo()
+                    ZB.reset_epo()
                 if joystick.get_button(buttonSlow):
                     driveLeft *= slowFactor
                     driveRight *= slowFactor
                 # Set the motors to the new speeds
-                ZB.SetMotor1(-driveLeft * maxPower)
-                ZB.SetMotor2(-driveLeft * maxPower)
-                ZB.SetMotor3(driveRight * maxPower)
-                ZB.SetMotor4(driveRight * maxPower)
+                ZB.set_motor1(-driveLeft * maxPower)
+                ZB.set_motor2(-driveLeft * maxPower)
+                ZB.set_motor3(driveRight * maxPower)
+                ZB.set_motor4(driveRight * maxPower)
         # Change the LED to reflect the status of the EPO latch
-        ZB.SetLed(ZB.GetEpo())
+        ZB.set_led(ZB.get_epo())
         # Wait for the interval period
         time.sleep(interval)
     # Disable all drives
-    ZB.MotorsOff()
+    ZB.motors_off()
 except KeyboardInterrupt:
     # CTRL+C exit, disable all drives
-    ZB.MotorsOff()
+    ZB.motors_off()
 print
