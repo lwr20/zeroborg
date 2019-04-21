@@ -298,14 +298,13 @@ can not be found on the current bus_number
         """
         self.Print('Loading ZeroBorg on bus %d, address %02X' % (self.bus_number, self.i2c_address))
 
-        # Open the bus
-        self.i2c_read = io.open("/dev/i2c-" + str(self.bus_number), "rb", buffering = 0)
-        fcntl.ioctl(self.i2c_read, I2C_SLAVE, self.i2c_address)
-        self.i2cWrite = io.open("/dev/i2c-" + str(self.bus_number), "wb", buffering = 0)
-        fcntl.ioctl(self.i2cWrite, I2C_SLAVE, self.i2c_address)
-
         # Check for ZeroBorg
         try:
+            # Open the bus
+            self.i2c_read = io.open("/dev/i2c-" + str(self.bus_number), "rb", buffering=0)
+            fcntl.ioctl(self.i2c_read, I2C_SLAVE, self.i2c_address)
+            self.i2cWrite = io.open("/dev/i2c-" + str(self.bus_number), "wb", buffering=0)
+            fcntl.ioctl(self.i2cWrite, I2C_SLAVE, self.i2c_address)
             i2c_recv = self.raw_read(COMMAND_GET_ID, I2C_NORM_LEN)
             if len(i2c_recv) == I2C_NORM_LEN:
                 if i2c_recv[1] == I2C_ID_ZEROBORG:
