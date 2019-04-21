@@ -13,18 +13,18 @@ sys.stdout = sys.stderr
 
 # Setup the ZeroBorg
 ZB = ZeroBorg.ZeroBorg()
-#ZB.i2cAddress = 0x44                  # Uncomment and change the value if you have changed the board address
+#ZB.i2c_address = 0x44                  # Uncomment and change the value if you have changed the board address
 ZB.init()
 if not ZB.foundChip:
     boards = ZeroBorg.scan_for_zero_borg()
     if len(boards) == 0:
         print 'No ZeroBorg found, check you are attached :)'
     else:
-        print 'No ZeroBorg at address %02X, but we did find boards:' % (ZB.i2cAddress)
+        print 'No ZeroBorg at address %02X, but we did find boards:' % (ZB.i2c_address)
         for board in boards:
             print '    %02X (%d)' % (board, board)
         print 'If you need to change the I²C address change the setup line so it is correct, e.g.'
-        print 'ZB.i2cAddress = 0x%02X' % (boards[0])
+        print 'ZB.i2c_address = 0x%02X' % (boards[0])
     sys.exit()
 #ZB.set_epo_ignore(True)                 # Uncomment to disable EPO latch, needed if you do not have a switch / jumper
 # Ensure the communications failsafe has been enabled!
@@ -35,7 +35,7 @@ for i in range(5):
     if failsafe:
         break
 if not failsafe:
-    print 'Board %02X failed to report in failsafe mode!' % (ZB.i2cAddress)
+    print 'Board %02X failed to report in failsafe mode!' % (ZB.i2c_address)
     sys.exit()
 ZB.reset_epo()
 
